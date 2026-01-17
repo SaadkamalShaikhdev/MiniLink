@@ -24,7 +24,7 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch("http://localhost:3000/api/generate", requestOptions)
+fetch(`${NEXT_PUBLIC_HOST}api/generate`, requestOptions)
   .then((response) => response.json())
   .then((result) =>{ alert(result.message)
  setgenerated(`${process.env.NEXT_PUBLIC_HOST}${shortUrl}`)

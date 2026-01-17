@@ -24,7 +24,7 @@ const Dashboard = () => {
   const getData = async () => {
     try {
       setLoading(true)
-      const fetchingData = await fetch("/api/dashboardData")
+      const fetchingData = await fetch(`${NEXT_PUBLIC_HOST}api/dashboardData`)
       
       if (!fetchingData.ok) {
         throw new Error(`HTTP error! status: ${fetchingData.status}`)
