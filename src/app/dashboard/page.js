@@ -149,7 +149,7 @@ const Dashboard = () => {
                     <div className='flex items-center gap-2 mb-3'>
                       <span className='text-cyan-500 font-medium'>localhost:3000/{item.shortUrl}</span>
                       <button 
-                        onClick={() => navigator.clipboard.writeText(`localhost:3000/${item.shortUrl}`)}
+                        onClick={() => navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_HOST}${item.shortUrl}`)}
                         className='p-1 hover:bg-gray-100 rounded transition-colors'
                       >
                         <svg className='w-4 h-4 text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
