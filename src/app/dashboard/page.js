@@ -147,7 +147,7 @@ const Dashboard = () => {
                     </p>
                     <p className='text-xs text-gray-500 mb-2'>Short URL</p>
                     <div className='flex items-center gap-2 mb-3'>
-                      <span className='text-cyan-500 font-medium'>localhost:3000/{item.shortUrl}</span>
+                      <span className='text-cyan-500 font-medium'>{process.env.NEXT_PUBLIC_HOST}{item.shortUrl}</span>
                       <button 
                         onClick={() => navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_HOST}${item.shortUrl}`)}
                         className='p-1 hover:bg-gray-100 rounded transition-colors'
