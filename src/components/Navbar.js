@@ -19,8 +19,8 @@ const Navbar = () => {
             <div className='h-16 md:h-26 flex justify-between items-center px-4 md:px-10'>
                 {/* Logo */}
                 <div className="logo font-bold text-2xl">
-                    <Link className="relative block w-32 md:w-64 h-12 md:h-16" href="/">
-                        <Image src="/logo.png" fill={true} alt="Logo" className="object-contain" />
+                    <Link className="relative block w-36 md:w-48 h-10 md:h-12" href="/">
+                        <Image src="/logo.png" fill={true} alt="MiniLink Logo" className="object-contain object-left" />
                     </Link>
                 </div>
 
