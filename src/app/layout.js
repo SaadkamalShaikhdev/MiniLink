@@ -22,8 +22,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Bitlinks - Your Trusted URL Shortener",
-  description: "Bitlinks helps you shorten your url easily.",
+  title: "MiniLink – URL Shortener with Real-Time Analytics",
+  description: "MiniLink helps you shorten URLs and track real-time click analytics when you’re logged in. Simple, fast, and built for modern web users..",
 };
 
 export default function RootLayout({ children }) {
