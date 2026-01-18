@@ -2,13 +2,14 @@
 import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
+import { Toaster,toast } from "react-hot-toast";
 
 export default function Home() {
      const [url, seturl] = useState("")
       const [shortUrl, setshortUrl] = useState("")
       const [generated, setgenerated] = useState("")
 
-        const generate = (()=>{
+        const generate = ( async()=>{
      const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
@@ -24,18 +25,20 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch(`${process.env.NEXT_PUBLIC_HOST}api/generate`, requestOptions)
-  .then((response) => response.json())
-  .then((result) =>{ alert(result.message)
- setgenerated(`${process.env.NEXT_PUBLIC_HOST}${shortUrl}`)
+const a = await fetch(`${process.env.NEXT_PUBLIC_HOST}api/generate`, requestOptions)
+  const res = await a.json()
+  if(res.success){
+toast.success(res.message)
+setgenerated(`${process.env.NEXT_PUBLIC_HOST}${shortUrl}`)
   setshortUrl("")
   seturl("")
-  })
-  .catch((error) => console.error(error));
- 
-    })
+  }else{
+    toast.error(res.message)
+  }
+        })
   return (
    <main className="min-h-screen bg-gradient-to-br from-cyan-150 via-cyan-50 to-white">
+    <Toaster/>
      <div className="max-w-6xl mx-auto px-4 py-12">
       
     <h1 className="text-center text-4xl md:text-5xl font-extrabold 
