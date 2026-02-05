@@ -35,3 +35,35 @@ export async function GET() {
     }, {status: 500} )
    }
 }
+export async function DELETE(request) {
+const session = await getServerSession(authOptions)
+    await dbConnect();
+    try {
+        if (!session) {
+            return new Response({
+                success: false,
+                message: "Unauthorized"
+            }, {status: 401} )
+        }
+        const { shortUrl } = await request.json();
+        const userEmail = session.user.email;
+        const deleted = await UrlModel.findOneAndDelete({ email: userEmail, shortUrl });
+        if (!deleted) {
+            return new Response({
+                success: false,
+                message: "URL not found or not owned by user"
+            }, {status: 404} )
+        }
+        return new Response({
+            success: true,
+            message: "URL deleted successfully"
+        }, {status: 200} )
+    }
+    catch (error) {        return new Response({
+            success: false,
+            message: "An error occurred while deleting the URL", error
+        }, {status: 500} )
+    }
+    
+}
+

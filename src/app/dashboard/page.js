@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { signOut, signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Link, TrendingUp, MousePointerClick, Activity, BarChart3 } from "lucide-react"
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const Dashboard = () => {
   const { data: session, status } = useSession()
@@ -14,6 +16,7 @@ const Dashboard = () => {
   const [mostClick, setMostClick] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+const MySwal = withReactContent(Swal)
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -37,7 +40,7 @@ const Dashboard = () => {
       setData(res.data?.urls || [])
       setTotalClicks(res.data?.totalClicks || 0)
       setTotalLinks(res.data?.totalLinks || 0)
-      setAverageClicks(res.data?.averageClicks || 0)
+      setAverageClicks(res.data?.averageClicks.toFixed(2) || 0)
       setMostClick(res.data?.mostClicked?.clicks || 0)
     } catch (err) {
       console.error('Error fetching data:', err)
@@ -60,7 +63,40 @@ const Dashboard = () => {
       </div>
     )
   }
+  const deleteUrl = async (shortUrl) => {
+    const result = await MySwal.fire({
+      title: 'Are you sure?',
+      text: "This action cannot be undone!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    })
 
+    if (result.isConfirmed) {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}api/dashboardData`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ shortUrl })
+        })
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        getData()
+      } catch (err) {
+        console.error('Error deleting URL:', err)
+        MySwal.fire({
+          title: 'Error!',
+          text: 'Failed to delete URL',
+          icon: 'error'
+        })
+      } 
+    }
+  }
   if (!session) {
     return null
   }
@@ -185,7 +221,7 @@ const Dashboard = () => {
                       <p className='text-xs text-gray-600'>clicks</p>
                     </div>
                     <button 
-                      onClick={() => {/* Add delete functionality */}}
+                      onClick={() => {deleteUrl(item.shortUrl)}}
                       className='p-2 hover:bg-red-50 rounded transition-colors'
                     >
                       <svg className='w-5 h-5 text-gray-400 hover:text-red-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
