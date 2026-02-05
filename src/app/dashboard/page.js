@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Link, TrendingUp, MousePointerClick, Activity, BarChart3 } from "lucide-react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { Toaster,toast } from "react-hot-toast";
 
 const Dashboard = () => {
   const { data: session, status } = useSession()
@@ -73,7 +74,6 @@ const MySwal = withReactContent(Swal)
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!'
     })
-
     if (result.isConfirmed) {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}api/dashboardData`, {
@@ -97,12 +97,18 @@ const MySwal = withReactContent(Swal)
       } 
     }
   }
+  const copyToClipboard = (text)=>{
+    navigator.clipboard.writeText(text)
+    toast.success("Copied to clipboard")
+    
+  }
   if (!session) {
     return null
   }
 
   return (
     <div className='min-h-screen w-full bg-gradient-to-br from-cyan-50 via-cyan-50 to-white'>
+      <Toaster/>
       <div className='max-w-7xl mx-auto px-4 py-12'>
         <h2 className='text-4xl font-bold mb-2'>Analytics Dashboard</h2>
         <p className='text-lg mb-10'>Monitor your link performance and engagement metrics</p>
@@ -166,71 +172,72 @@ const MySwal = withReactContent(Swal)
           ) : data.length === 0 ? (
             <p className='text-center py-8 text-gray-600'>No links found</p>
           ) : (
-            data.map((item, index) => (
-              <div 
-                key={item._id || item.id || index} 
-                className='bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow'
-              >
-                <div className='flex items-start justify-between'>
-                  <div className='flex-1'>
-                    <p className='text-sm text-gray-500 mb-1'>
-                      {new Date(item.createdAt).toLocaleDateString('en-US', { 
-                        month: 'short', 
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </p>
-                    <p className='text-xs text-gray-500 mb-2'>Short URL</p>
-                    <div className='flex items-center gap-2 mb-3'>
-                      <span className='text-cyan-500 font-medium'>{process.env.NEXT_PUBLIC_HOST}{item.shortUrl}</span>
-                      <button 
-                        onClick={() => navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_HOST}${item.shortUrl}`)}
-                        className='p-1 hover:bg-gray-100 rounded transition-colors'
-                      >
-                        <svg className='w-4 h-4 text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z' />
-                        </svg>
-                      </button>
-                    </div>
-                    <div className='flex items-center gap-2'>
-                      <p className='text-xs text-gray-500'>Original URL</p>
-                      <a 
-                        href={item.url} 
-                        target='_blank' 
-                        rel='noopener noreferrer'
-                        className='p-1 hover:bg-gray-100 rounded transition-colors'
-                      >
-                        <svg className='w-4 h-4 text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14' />
-                        </svg>
-                      </a>
-                    </div>
-                    <p className='text-sm text-gray-700 mt-1'>{item.url}</p>
-                  </div>
-                  
-                  <div className='flex flex-col items-center gap-3 ml-6'>
-                    <div className='bg-cyan-50 flex flex-col items-center rounded-lg px-7 py-2 text-right border border-cyan-400'>
-                      <div className='flex items-center justify-center gap-2'>
-                        <svg className='w-5 h-5 text-cyan-500 mx-auto mb-1' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z' />
-                      </svg>
-                      <p className='text-2xl font-bold text-cyan-500'>{item.clicks || 0}</p>
-                      </div>
-                    
-                      <p className='text-xs text-gray-600'>clicks</p>
-                    </div>
-                    <button 
-                      onClick={() => {deleteUrl(item.shortUrl)}}
-                      className='p-2 hover:bg-red-50 rounded transition-colors'
-                    >
-                      <svg className='w-5 h-5 text-gray-400 hover:text-red-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16' />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
+          data.map((item, index) => (
+  <div 
+    key={item._id || item.id || index} 
+    className='bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow'
+  >
+    <div className='flex flex-col sm:flex-row items-start justify-between gap-4'>
+      <div className='flex-1 w-full sm:w-auto'>
+        <p className='text-sm text-gray-500 mb-1'>
+          {new Date(item.createdAt).toLocaleDateString('en-US', { 
+            month: 'short', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })}
+        </p>
+        <p className='text-xs text-gray-500 mb-2'>Short URL</p>
+        <div className='flex items-center gap-2 mb-3 flex-wrap'>
+          <span className='text-cyan-500 font-medium break-all text-sm sm:text-base'>
+            {process.env.NEXT_PUBLIC_HOST}{item.shortUrl}
+          </span>
+          <button 
+            onClick={() => {copyToClipboard(`${process.env.NEXT_PUBLIC_HOST}${item.shortUrl}`)}}
+            className='p-1 hover:bg-gray-100 rounded transition-colors flex-shrink-0'
+          >
+            <svg className='w-4 h-4 text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z' />
+            </svg>
+          </button>
+        </div>
+        <div className='flex items-center gap-2'>
+          <p className='text-xs text-gray-500'>Original URL</p>
+          <a 
+            href={item.url} 
+            target='_blank' 
+            rel='noopener noreferrer'
+            className='p-1 hover:bg-gray-100 rounded transition-colors flex-shrink-0'
+          >
+            <svg className='w-4 h-4 text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14' />
+            </svg>
+          </a>
+        </div>
+        <p className='text-sm text-gray-700 mt-1 break-all'>{item.url}</p>
+      </div>
+      
+      <div className='flex sm:flex-col items-center justify-between sm:justify-start gap-3 w-full sm:w-auto sm:ml-6'>
+        <div className='bg-cyan-50 flex flex-col items-center rounded-lg px-6 sm:px-7 py-2 border border-cyan-400'>
+          <div className='flex items-center justify-center gap-2'>
+            <svg className='w-4 h-4 sm:w-5 sm:h-5 text-cyan-500 mx-auto mb-1' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z' />
+            </svg>
+            <p className='text-xl sm:text-2xl font-bold text-cyan-500'>{item.clicks || 0}</p>
+          </div>
+          <p className='text-xs text-gray-600'>clicks</p>
+        </div>
+        <button 
+          onClick={() => {deleteUrl(item.shortUrl)}}
+          className='p-2 hover:bg-red-50 rounded transition-colors'
+        >
+          <svg className='w-5 h-5 text-gray-400 hover:text-red-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16' />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
             ))
           )}
         </div>
