@@ -10,6 +10,22 @@ export default function Home() {
       const [generated, setgenerated] = useState("")
 
         const generate = ( async()=>{
+          if(!url){
+            toast.error("Please enter a URL")
+            return
+          }
+          if(!shortUrl){
+            toast.error("Please enter a Preferred short URL Text")
+            return
+          }
+          if(shortUrl.includes(" ") || url.includes(" ")){
+            toast.error("Preferred short URL Text cannot contain spaces")
+            return
+          }
+          if(!url.includes("http://") || url.includes("https://")){
+            toast.error("Please enter a URL without http:// or https://")
+            return
+          }
      const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
@@ -37,12 +53,12 @@ setgenerated(`${process.env.NEXT_PUBLIC_HOST}${shortUrl}`)
   }
         })
   return (
-   <main className="min-h-screen bg-gradient-to-br from-cyan-150 via-cyan-50 to-white">
+   <main className="min-h-screen bg-linear-to-br from-cyan-150 via-cyan-50 to-white">
     <Toaster/>
      <div className="max-w-6xl mx-auto px-4 py-12">
       
     <h1 className="text-center text-4xl md:text-5xl font-extrabold 
-bg-gradient-to-r from-[#0bc3eb] via-cyan-400 to-blue-500
+bg-linear-to-r from-[#0bc3eb] via-cyan-400 to-blue-500
 bg-clip-text text-transparent mb-2">Make Your Link Shorter</h1>
 <p className="text-center text-lg text-gray-600 max-w-2xl mx-auto mb-12">Transform long, complex URLs into short, shareable links in seconds. Track clicks and manage all your links in one place.</p>
 <div className="md:max-w-3/4 bg-white rounded-2xl mx-auto">
@@ -61,7 +77,7 @@ bg-clip-text text-transparent mb-2">Make Your Link Shorter</h1>
 </div>
 {generated &&<div className='flex flex-col gap-2'>
       <span className='font-bold text-lg'>Your Link</span><code> <Link target='_blank' href={generated}> {generated}</Link></code>  </div>}
-<button onClick={()=>generate()} className="flex w-fit items-center gap-2 px-6 py-3 rounded-lg transition-all text-white shadow-md cursor-pointer font-bold bg-gradient-to-r from-[#21cbf1] to-cyan-500">
+<button onClick={()=>generate()} className="flex w-fit items-center gap-2 px-6 py-3 rounded-lg transition-all text-white shadow-md cursor-pointer font-bold bg-linear-to-r from-[#21cbf1] to-cyan-500">
   Shorten URL
 </button>
 </div>
