@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { AuthProvider } from "@/context/AuthProvider";
 import { Analytics } from "@vercel/analytics/next"
+import Footer from "@/components/Footer";
 
 
 const geistSans = Geist({
@@ -35,6 +36,7 @@ export default function RootLayout({ children }) {
         className={`${poppins.className} ${geistSans.variable} antialiased`}
       ><Navbar/>
         {children}
+        <Footer/>
       </body>
       </AuthProvider>
     </html>
