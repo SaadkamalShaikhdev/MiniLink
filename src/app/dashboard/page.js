@@ -59,7 +59,7 @@ const MySwal = withReactContent(Swal)
   
   if (status === 'loading') {
     return (
-      <div className='min-h-screen w-full bg-gradient-to-br from-cyan-50 via-cyan-50 to-white flex items-center justify-center'>
+      <div className='min-h-screen w-full bg-linear-to-br from-cyan-50 via-cyan-50 to-white flex items-center justify-center'>
         <p className='text-lg'>Loading...</p>
       </div>
     )
@@ -107,7 +107,7 @@ const MySwal = withReactContent(Swal)
   }
 
   return (
-    <div className='min-h-screen w-full bg-gradient-to-br from-cyan-50 via-cyan-50 to-white'>
+    <div className='min-h-screen w-full bg-linear-to-br from-cyan-50 via-cyan-50 to-white'>
       <Toaster/>
       <div className='max-w-7xl mx-auto px-4 py-12'>
         <h2 className='text-4xl font-bold mb-2'>Analytics Dashboard</h2>
@@ -194,7 +194,7 @@ const MySwal = withReactContent(Swal)
           </span>
           <button 
             onClick={() => {copyToClipboard(`${process.env.NEXT_PUBLIC_HOST}${item.shortUrl}`)}}
-            className='p-1 hover:bg-gray-100 rounded transition-colors flex-shrink-0'
+            className='p-1 hover:bg-gray-100 rounded transition-colors shrink-0'
           >
             <svg className='w-4 h-4 text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z' />
@@ -207,7 +207,7 @@ const MySwal = withReactContent(Swal)
             href={item.url} 
             target='_blank' 
             rel='noopener noreferrer'
-            className='p-1 hover:bg-gray-100 rounded transition-colors flex-shrink-0'
+            className='p-1 hover:bg-gray-100 rounded transition-colors shrink-0'
           >
             <svg className='w-4 h-4 text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14' />
