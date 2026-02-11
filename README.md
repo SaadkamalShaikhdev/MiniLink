@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🔗 MiniLink – Smart URL Shortener
 
-## Getting Started
+MiniLink is a modern URL shortener built with Next.js that allows users to shorten long URLs and track link analytics.  
+If a user is signed in, they can view total click counts for their shortened links through a personal dashboard.
 
-First, run the development server:
+---
+
+## 🌍 Live Demo
+
+👉 https://mini-link-five.vercel.app/
+
+---
+
+## 🚀 Features
+
+- 🔗 Instantly shorten long URLs
+- 👤 Secure authentication with NextAuth
+- 📊 Track total clicks (for logged-in users)
+- 📈 User dashboard for managing links
+- 🔔 Beautiful alerts using SweetAlert2
+- ⚡ Fast performance with Next.js 16 & React 19
+- 📊 Integrated Vercel Analytics
+- 🗄️ MongoDB database with Mongoose
+
+---
+
+## 🛠️ Tech Stack
+
+- **Next.js 16**
+- **React 19**
+- **NextAuth.js**
+- **MongoDB + Mongoose**
+- **Vercel Analytics**
+- **Lucide React**
+- **React Hot Toast**
+- **SweetAlert2**
+
+---
+
+## 📦 Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/SaadkamalShaikhdev//MiniLink.git
+cd minilink
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+---
+
+## 🧪 Run Locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🔐 How It Works
 
-To learn more about Next.js, take a look at the following resources:
+### 🔗 URL Shortening
+1. User enters a long URL.
+2. MiniLink generates a unique short slug.
+3. The short link redirects to the original URL.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 📊 Click Tracking (Signed-in Users Only)
+- Each click is stored in the database.
+- Logged-in users can see total clicks in their dashboard.
+- Non-logged-in users can still use shortened links, but analytics are not saved.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📁 Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+app/
+ ├── page.js
+ ├── dashboard/
+ ├── api/
+components/
+models/
+lib/
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🚀 Deployment
+
+MiniLink is deployed on **Vercel**:
+
+👉 https://mini-link-five.vercel.app/
+
+---
+
+## 🎯 Future Improvements
+
+- Custom short URLs
+- QR code generation
+- Advanced analytics (device, country, IP)
+- Link expiration
+- Public API support
+
+---
+
+## 👨‍💻 Author
+
+**SaadKamal**
+
+Full Stack Developer passionate about building scalable and modern web applications.
