@@ -22,8 +22,8 @@ export default function Home() {
             toast.error("Preferred short URL Text cannot contain spaces")
             return
           }
-          if(!url.includes("http://") || url.includes("https://")){
-            toast.error("Please enter a URL without http:// or https://")
+          if(!url.includes("http://") && !url.includes("https://")){
+            toast.error("Please enter a valid URL with http:// or https://")
             return
           }
      const myHeaders = new Headers();
