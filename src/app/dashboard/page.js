@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { signOut, signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { Link, TrendingUp, MousePointerClick, Activity, BarChart3 } from "lucide-react"
+import { Link, TrendingUp, MousePointerClick, Activity, BarChart3, Copy, Check } from "lucide-react"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { Toaster,toast } from "react-hot-toast";
@@ -16,7 +16,8 @@ const Dashboard = () => {
   const [averageClicks, setAverageClicks] = useState(0)
   const [mostClick, setMostClick] = useState(0)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [fetchError, setFetchError] = useState("")
+  const [copiedLinks, setCopiedLinks] = useState({})
 const MySwal = withReactContent(Swal)
 
   useEffect(() => {
@@ -45,7 +46,7 @@ const MySwal = withReactContent(Swal)
       setMostClick(res.data?.mostClicked?.clicks || 0)
     } catch (err) {
       console.error('Error fetching data:', err)
-      setError(err.message)
+      setFetchError(err.message)
     } finally {
       setLoading(false)
     }
@@ -97,10 +98,15 @@ const MySwal = withReactContent(Swal)
       } 
     }
   }
-  const copyToClipboard = (text)=>{
-    navigator.clipboard.writeText(text)
-    toast.success("Copied to clipboard")
-    
+  const copyToClipboard = async (text, id)=>{
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopiedLinks(prev => ({ ...prev, [id]: true }))
+      toast.success("Copied to clipboard")
+      setTimeout(() => setCopiedLinks(prev => ({ ...prev, [id]: false })), 2000)
+    } catch (err) {
+      toast.error("Failed to copy")
+    }
   }
   if (!session) {
     return null
@@ -167,8 +173,8 @@ const MySwal = withReactContent(Swal)
         <div className='space-y-4'>
           {loading ? (
             <p className='text-center py-8 text-gray-600'>Loading links...</p>
-          ) : error ? (
-            <p className='text-center py-8 text-red-600'>Error: {error}</p>
+          ) : fetchError ? (
+            <p className='text-center py-8 text-red-600'>Error: {fetchError}</p>
           ) : data.length === 0 ? (
             <p className='text-center py-8 text-gray-600'>No links found</p>
           ) : (
@@ -189,16 +195,15 @@ const MySwal = withReactContent(Swal)
         </p>
         <p className='text-xs text-gray-500 mb-2'>Short URL</p>
         <div className='flex items-center gap-2 mb-3 flex-wrap'>
-          <span className='text-cyan-500 font-medium break-all text-sm sm:text-base'>
+          <span className='text-cyan-600 font-medium break-all text-sm sm:text-base hover:underline'>
             {process.env.NEXT_PUBLIC_HOST}{item.shortUrl}
           </span>
           <button 
-            onClick={() => {copyToClipboard(`${process.env.NEXT_PUBLIC_HOST}${item.shortUrl}`)}}
-            className='p-1 hover:bg-gray-100 rounded transition-colors shrink-0'
+            onClick={() => {copyToClipboard(`${process.env.NEXT_PUBLIC_HOST}${item.shortUrl}`, item._id || item.id || index)}}
+            className='p-1 hover:bg-cyan-50 rounded transition-colors shrink-0'
+            title="Copy short URL"
           >
-            <svg className='w-4 h-4 text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z' />
-            </svg>
+            {copiedLinks[item._id || item.id || index] ? <Check className='w-4 h-4 text-green-500' /> : <Copy className='w-4 h-4 text-gray-500' />}
           </button>
         </div>
         <div className='flex items-center gap-2'>
